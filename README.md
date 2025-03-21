@@ -46,7 +46,9 @@ Feel free to poke around, fork it, or drop me a note if you’ve got ideas!
 
 
 # My stock trend analyzer script - took me a while to get this working!
-import yfinance as yf  # Yahoo Finance API is super handy for stock data
+  
+   # Yahoo Finance API is super handy for stock data
+      import yfinance as yf
 import pandas as pd  # Pandas is my go-to for messing with tables
 from datetime import datetime, timedelta  # Needed these for the date stuff
 import matplotlib.pyplot as plt  # Plotting’s the fun part!
