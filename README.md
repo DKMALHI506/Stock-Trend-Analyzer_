@@ -52,8 +52,8 @@ Feel free to poke around, fork it, or drop me a note if you’ve got ideas!
      import matplotlib.pyplot as plt   
 
 # Date setup - last 30 days
-today = datetime.today()           # Today’s date
-thirty_days_ago = today - timedelta(days=30)  # Rewind 30 days
+      today = datetime.today()           # Today’s date
+      thirty_days_ago = today - timedelta(days=30)  # Rewind 30 days
 
 # Fetch Tesla stock - TSLA’s a fun pick
 tesla = yf.Ticker("TSLA")          # Tesla’s ticker
