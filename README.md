@@ -46,7 +46,7 @@ Feel free to poke around, fork it, or drop me a note if you’ve got ideas!
 
 
 # My stock analyzer - took some sweat to get running!
-import yfinance as yf              # Pulls stock data from Yahoo Finance
+import yfinance as yf             ## Pulls stock data from Yahoo Finance
 import pandas as pd                # For handling data
 from datetime import datetime, timedelta  # For dates
 import matplotlib.pyplot as plt    # For graphs
