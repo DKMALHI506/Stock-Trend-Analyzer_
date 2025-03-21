@@ -56,47 +56,47 @@ Feel free to poke around, fork it, or drop me a note if you’ve got ideas!
       thirty_days_ago = today - timedelta(days=30)  # Rewind 30 days
 
 # Fetch Tesla stock - TSLA’s a fun pick
-tesla = yf.Ticker("TSLA")          # Tesla’s ticker
-stock_data = tesla.history(start=thirty_days_ago, end=today)  # Last month’s data
+      tesla = yf.Ticker("TSLA")          # Tesla’s ticker
+      stock_data = tesla.history(start=thirty_days_ago, end=today)  # Last month’s data
 
 # Moving averages - 5 and 20 days
-stock_data['FiveDayAvg'] = stock_data['Close'].rolling(window=5).mean()    # 5-day trend
-stock_data['TwentyDayAvg'] = stock_data['Close'].rolling(window=20).mean() # 20-day trend
+      stock_data['FiveDayAvg'] = stock_data['Close'].rolling(window=5).mean()    # 5-day trend
+      stock_data['TwentyDayAvg'] = stock_data['Close'].rolling(window=20).mean() # 20-day trend
 
 # Buy/sell signals - took some trial
-stock_data['TradeSignal'] = 0      # Default: hold (0)
-stock_data.loc[stock_data['FiveDayAvg'] > stock_data['TwentyDayAvg'], 'TradeSignal'] = 1   # Buy signal
-stock_data.loc[stock_data['FiveDayAvg'] < stock_data['TwentyDayAvg'], 'TradeSignal'] = -1  # Sell signal
-stock_data['ChangePoint'] = stock_data['TradeSignal'].diff()  # Signal switches
+      stock_data['TradeSignal'] = 0      # Default: hold (0)
+      stock_data.loc[stock_data['FiveDayAvg'] > stock_data['TwentyDayAvg'], 'TradeSignal'] = 1   # Buy signal
+      stock_data.loc[stock_data['FiveDayAvg'] < stock_data['TwentyDayAvg'], 'TradeSignal'] = -1  # Sell signal
+      stock_data['ChangePoint'] = stock_data['TradeSignal'].diff()  # Signal switches
 
 # Show trades - where I’d act
-print("Where I’d buy (signal to 1):")
-print(stock_data[stock_data['ChangePoint'] == 1][['Close', 'FiveDayAvg', 'TwentyDayAvg']])
-print("\nWhere I’d sell (signal to -1):")
-print(stock_data[stock_data['ChangePoint'] == -1][['Close', 'FiveDayAvg', 'TwentyDayAvg']])
+      print("Where I’d buy (signal to 1):")
+      print(stock_data[stock_data['ChangePoint'] == 1][['Close', 'FiveDayAvg', 'TwentyDayAvg']])
+      print("\nWhere I’d sell (signal to -1):")
+      print(stock_data[stock_data['ChangePoint'] == -1][['Close', 'FiveDayAvg', 'TwentyDayAvg']])
 
 # Graph time - took time to polish
-plt.figure(figsize=(10, 6))        # Wide size
-plt.plot(stock_data.index, stock_data['Close'], color='blue')           # Price in blue
-plt.plot(stock_data.index, stock_data['FiveDayAvg'], color='orange', label='5-Day Avg')    # 5-day in orange
-plt.plot(stock_data.index, stock_data['TwentyDayAvg'], color='green', label='20-Day Avg')  # 20-day in green
+      plt.figure(figsize=(10, 6))        # Wide size
+      plt.plot(stock_data.index, stock_data['Close'], color='blue')           # Price in blue
+      plt.plot(stock_data.index, stock_data['FiveDayAvg'], color='orange', label='5-Day Avg')    # 5-day in orange
+      plt.plot(stock_data.index, stock_data['TwentyDayAvg'], color='green', label='20-Day Avg')  # 20-day in green
 
 # Markers for trades - triangles rock
-plt.scatter(stock_data.index[stock_data['ChangePoint'] == 1], 
+      plt.scatter(stock_data.index[stock_data['ChangePoint'] == 1], 
             stock_data['Close'][stock_data['ChangePoint'] == 1], 
             color='green', marker='^', label='Buy Here')  # Green up-arrows
-plt.scatter(stock_data.index[stock_data['ChangePoint'] == -1], 
+      plt.scatter(stock_data.index[stock_data['ChangePoint'] == -1], 
             stock_data['Close'][stock_data['ChangePoint'] == -1], 
             color='red', marker='v', label='Sell Here')   # Red down-arrows
 
 # Labels and polish - looks legit
-plt.title("Tesla Stock Price - Last 30 Days")  # Clear title
-plt.xlabel("Date")                  # X: dates
-plt.ylabel("Price in USD")          # Y: cash
-plt.grid(True)                      # Grid for clarity
-plt.xticks(rotation=45)             # Tilt dates
-plt.legend()                        # Line labels
+      plt.title("Tesla Stock Price - Last 30 Days")  # Clear title
+      plt.xlabel("Date")                  # X: dates
+      plt.ylabel("Price in USD")          # Y: cash
+      plt.grid(True)                      # Grid for clarity
+      plt.xticks(rotation=45)             # Tilt dates
+      plt.legend()                        # Line labels
 
 # Save and show - for GitHub
-plt.savefig('tesla_price_chart.png')  # Save as PNG
-plt.show()                          # Show locally
+      plt.savefig('tesla_price_chart.png')  # Save as PNG
+      plt.show()                          # Show locally
