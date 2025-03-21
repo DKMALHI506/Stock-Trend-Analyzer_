@@ -45,60 +45,58 @@ I wanted a project that mixes real-world data with some basic prediction logic�
 Feel free to poke around, fork it, or drop me a note if you’ve got ideas!
 
 
-# My stock trend analyzer script - took me a while to get this working!
-  
-   # Yahoo Finance API is super handy for stock data
-      import yfinance as yf
-import pandas as pd  # Pandas is my go-to for messing with tables
-from datetime import datetime, timedelta  # Needed these for the date stuff
-import matplotlib.pyplot as plt  # Plotting’s the fun part!
+# My little stock analyzer - took some sweat to get this running!
+import yfinance as yf              # Pulls stock data from Yahoo Finance
+import pandas as pd                # Love pandas for handling data
+from datetime import datetime, timedelta  # For dealing with dates
+import matplotlib.pyplot as plt    # Makes the pretty graphs
 
-# Setting up the date range - just the last 30 days to keep it simple
-today = datetime.today()  # Grabs today’s date
-thirty_days_ago = today - timedelta(days=30)  # Backtracks 30 days
+# Date setup - sticking to the last 30 days
+today = datetime.today()           # Today’s date, simple enough
+thirty_days_ago = today - timedelta(days=30)  # Rewind 30 days
 
-# Pulling Tesla’s stock data - TSLA seemed like a cool choice
-tesla = yf.Ticker("TSLA")  # Ticker object for Tesla
-stock_data = tesla.history(start=thirty_days_ago, end=today)  # Gets the last month’s prices
+# Grabbing Tesla’s stock - TSLA’s a fun one
+tesla = yf.Ticker("TSLA")          # Tesla’s ticker object
+stock_data = tesla.history(start=thirty_days_ago, end=today)  # Last month’s data
 
-# Adding moving averages - 5 and 20 days felt like a good combo
-stock_data['FiveDayAvg'] = stock_data['Close'].rolling(window=5).mean()  # Short-term trend
-stock_data['TwentyDayAvg'] = stock_data['Close'].rolling(window=20).mean()  # Longer-term trend
+# Moving averages - 5 and 20 days seemed solid
+stock_data['FiveDayAvg'] = stock_data['Close'].rolling(window=5).mean()    # Quick 5-day trend
+stock_data['TwentyDayAvg'] = stock_data['Close'].rolling(window=20).mean() # Slower 20-day trend
 
-# Figuring out buy/sell signals - took some trial and error here!
-stock_data['TradeSignal'] = 0  # Start with neutral (0)
-stock_data.loc[stock_data['FiveDayAvg'] > stock_data['TwentyDayAvg'], 'TradeSignal'] = 1  # Buy when short crosses over long
-stock_data.loc[stock_data['FiveDayAvg'] < stock_data['TwentyDayAvg'], 'TradeSignal'] = -1  # Sell when it dips below
-stock_data['ChangePoint'] = stock_data['TradeSignal'].diff()  # Spots where signals flip
+# Buy/sell signals - messed around a bit to get this right
+stock_data['TradeSignal'] = 0      # Default is hold (0)
+stock_data.loc[stock_data['FiveDayAvg'] > stock_data['TwentyDayAvg'], 'TradeSignal'] = 1   # Buy signal
+stock_data.loc[stock_data['FiveDayAvg'] < stock_data['TwentyDayAvg'], 'TradeSignal'] = -1  # Sell signal
+stock_data['ChangePoint'] = stock_data['TradeSignal'].diff()  # Catches signal switches
 
-# Printing out the key moments - wanted to see where I’d trade
-print("Here’s where I’d buy (signal jumps to 1):")
+# Show me the trades - wanted to see what’s up
+print("Where I’d buy (signal to 1):")
 print(stock_data[stock_data['ChangePoint'] == 1][['Close', 'FiveDayAvg', 'TwentyDayAvg']])
-print("\nAnd here’s where I’d sell (signal drops to -1):")
+print("\nWhere I’d sell (signal to -1):")
 print(stock_data[stock_data['ChangePoint'] == -1][['Close', 'FiveDayAvg', 'TwentyDayAvg']])
 
-# Plotting it all - spent way too long making this look decent
-plt.figure(figsize=(10, 6))  # Bigger size so it’s not squished
-plt.plot(stock_data.index, stock_data['Close'], color='blue')  # The raw price line
-plt.plot(stock_data.index, stock_data['FiveDayAvg'], color='orange', label='5-Day Avg')  # Orange for the short avg
-plt.plot(stock_data.index, stock_data['TwentyDayAvg'], color='green', label='20-Day Avg')  # Green for the long avg
+# Graph time - took forever to make it look good
+plt.figure(figsize=(10, 6))        # Nice wide size
+plt.plot(stock_data.index, stock_data['Close'], color='blue')           # Price in blue
+plt.plot(stock_data.index, stock_data['FiveDayAvg'], color='orange', label='5-Day Avg')    # 5-day in orange
+plt.plot(stock_data.index, stock_data['TwentyDayAvg'], color='green', label='20-Day Avg')  # 20-day in green
 
-# Adding buy/sell markers - these triangles make it pop!
+# Markers for trades - these triangles are clutch
 plt.scatter(stock_data.index[stock_data['ChangePoint'] == 1], 
             stock_data['Close'][stock_data['ChangePoint'] == 1], 
-            color='green', marker='^', label='Buy Here')  # Green up-arrows for buys
+            color='green', marker='^', label='Buy Here')  # Green up-arrows
 plt.scatter(stock_data.index[stock_data['ChangePoint'] == -1], 
             stock_data['Close'][stock_data['ChangePoint'] == -1], 
-            color='red', marker='v', label='Sell Here')  # Red down-arrows for sells
+            color='red', marker='v', label='Sell Here')   # Red down-arrows
 
-# Making it readable - titles and labels are a must
-plt.title("Tesla Stock Price - Last 30 Days")  # Simple title
-plt.xlabel("Date")  # X-axis is time
-plt.ylabel("Price in USD")  # Y-axis is money
-plt.grid(True)  # Grid helps track the numbers
-plt.xticks(rotation=45)  # Tilted dates so they don’t overlap
-plt.legend()  # Legend to tell what’s what
+# Labels and polish - makes it legit
+plt.title("Tesla Stock Price - Last 30 Days")  # Clear title
+plt.xlabel("Date")                  # X is dates
+plt.ylabel("Price in USD")          # Y is cash
+plt.grid(True)                      # Grid for clarity
+plt.xticks(rotation=45)             # Tilt dates to fit
+plt.legend()                        # Explains the lines
 
-# Saving the plot - nice to have for my GitHub
-plt.savefig('tesla_price_chart.png')  # Saves it as a PNG
-plt.show()  # Pops up the graph on my screen
+# Save and show - gotta keep that plot
+plt.savefig('tesla_price_chart.png')  # For GitHub glory
+plt.show()                          # Pops up locally
