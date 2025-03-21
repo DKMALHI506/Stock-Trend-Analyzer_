@@ -16,7 +16,7 @@ A Python project to analyze Tesla's stock price trends using real-time data. I b
 - **matplotlib**: Makes the visuals pop.
 
 ## How to Run It
-1. Clone this repo: `git clone https://github.com/your-username/Stock-Trend-Analyzer.git`
+1. Clone this repo: `git clone https://github.com/DKMALHI506/Stock-Trend-Analyzer.git`
 2. Install dependencies: `pip install yfinance pandas matplotlib`
 3. Fire it up: `python stock_fetch.py`
    - You’ll see a table of buy/sell signals in the terminal and a graph window with the results.
@@ -45,11 +45,11 @@ I wanted a project that mixes real-world data with some basic prediction logic�
 Feel free to poke around, fork it, or drop me a note if you’ve got ideas!
 
 
-# My stock analyzer - took some sweat to get running!
-import yfinance as yf             ## Pulls stock data from Yahoo Finance
-import pandas as pd                # For handling data
-from datetime import datetime, timedelta  # For dates
-import matplotlib.pyplot as plt    # For graphs
+# My stock analyzer - LIBARIES!
+  import yfinance as yf            
+  import pandas as pd                
+  from datetime import datetime, timedelta  # For dates
+  import matplotlib.pyplot as plt    # For graphs
 
 # Date setup - last 30 days
 today = datetime.today()           # Today’s date
