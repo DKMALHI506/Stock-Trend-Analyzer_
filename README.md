@@ -46,10 +46,10 @@ Feel free to poke around, fork it, or drop me a note if you’ve got ideas!
 
 
 # My stock analyzer - LIBARIES!
-  import yfinance as yf            
-  import pandas as pd                
-  from datetime import datetime, timedelta  # For dates
-  import matplotlib.pyplot as plt    # For graphs
+     import yfinance as yf            
+     import pandas as pd                
+     from datetime import datetime, timedelta  
+     import matplotlib.pyplot as plt   
 
 # Date setup - last 30 days
 today = datetime.today()           # Today’s date
